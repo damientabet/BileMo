@@ -79,4 +79,28 @@ class PhoneController extends AbstractController
             'Content-Type' => 'application/json'
         ]);
     }
+
+    /**
+     * @Route("/phones/add", name="phone.add", methods={"POST"})
+     * @param Request $request
+     * @return Response
+     */
+    public function new(Request $request)
+    {
+        $phone = $this->serializer->deserialize($request->getContent(), Phone::class, 'json');
+        $errors = $this->validator->validate($phone);
+        if(count($errors)) {
+            $errors = $this->serializer->serialize($errors, 'json');
+            return new Response($errors, 500, [
+                'Content-Type' => 'application/json'
+            ]);
+        }
+        $this->entityManager->persist($phone);
+        $this->entityManager->flush();
+        $data = [
+            'status' => 201,
+            'message' => 'Le téléphone a bien été ajouté'
+        ];
+        return new JsonResponse($data, 201);
+    }
 }
