@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\PhoneRepository")
@@ -21,12 +22,16 @@ class Phone
     /**
      * @ORM\Column(type="string", length=128)
      * @Groups({"list", "show"})
+     * @Assert\NotBlank(message="Le champ ne doit pas être vide")
+     * @Assert\Length(min="2", minMessage="Ce champ doit contenir un minimum de {{ limit }} caractères", max="128", maxMessage="Ce champ doit contenir un maximum de {{ limit }} caractères")
      */
     private $brand;
 
     /**
      * @ORM\Column(type="string", length=128)
      * @Groups({"list", "show"})
+     * @Assert\NotBlank(message="Le champ ne doit pas être vide")
+     * @Assert\Length(min="2", minMessage="Ce champ doit contenir un minimum de {{ limit }} caractères", max="128", maxMessage="Ce champ doit contenir un maximum de {{ limit }} caractères")
      */
     private $model;
 
@@ -39,24 +44,31 @@ class Phone
     /**
      * @ORM\Column(type="decimal", precision=5, scale=2)
      * @Groups({"show"})
+     * @Assert\NotBlank(message="Le champ ne doit pas être vide")
      */
     private $screen_size;
 
     /**
      * @ORM\Column(type="string", length=64)
      * @Groups({"show"})
+     * @Assert\NotBlank(message="Le champ ne doit pas être vide")
+     * @Assert\Length(min="2", minMessage="Ce champ doit contenir un minimum de {{ limit }} caractères", max="128", maxMessage="Ce champ doit contenir un maximum de {{ limit }} caractères")
      */
     private $screen_resolution;
 
     /**
      * @ORM\Column(type="string", length=64)
      * @Groups({"show"})
+     * @Assert\NotBlank(message="Le champ ne doit pas être vide")
+     * @Assert\Length(min="2", minMessage="Ce champ doit contenir un minimum de {{ limit }} caractères", max="64", maxMessage="Ce champ doit contenir un maximum de {{ limit }} caractères")
      */
     private $os_version;
 
     /**
      * @ORM\Column(type="string", length=32)
      * @Groups({"show"})
+     * @Assert\NotBlank(message="Le champ ne doit pas être vide")
+     * @Assert\Length(min="2", minMessage="Ce champ doit contenir un minimum de {{ limit }} caractères", max="32", maxMessage="Ce champ doit contenir un maximum de {{ limit }} caractères")
      */
     private $color;
 
@@ -69,18 +81,22 @@ class Phone
     /**
      * @ORM\Column(type="integer")
      * @Groups({"show"})
+     * @Assert\NotBlank(message="Le champ ne doit pas être vide")
      */
     private $rom_memory;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups({"show"})
+     * @Assert\NotBlank(message="Le champ ne doit pas être vide")
+     * @Assert\Length(min="2", minMessage="Ce champ doit contenir un minimum de {{ limit }} caractères", max="255", maxMessage="Ce champ doit contenir un maximum de {{ limit }} caractères")
      */
     private $description;
 
     /**
      * @ORM\Column(type="decimal", precision=6, scale=2)
      * @Groups({"list", "show"})
+     * @Assert\NotBlank(message="Le champ ne doit pas être vide")
      */
     private $price;
 
