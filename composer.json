@@ -1,8 +1,9 @@
 {
-    "name": "o-p-c/bilemo",
+    "name": "damientabet/bilemo",
+    "version": "0.1.0",
+    "description": "This is an API for project 7 of the PHP/Symfony course on Openclassrooms",
     "type": "project",
     "license": "MIT",
-    "version": "0.0.1",
     "require": {
         "php": "^7.1.3",
         "ext-ctype": "*",
