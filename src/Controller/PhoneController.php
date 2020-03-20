@@ -3,43 +3,29 @@
 namespace App\Controller;
 
 use App\Entity\Phone;
-use App\Repository\PhoneRepository;
+use App\Service\PhoneService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Serializer\SerializerInterface;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class PhoneController extends AbstractController
 {
-    private $limit;
-    /**
-     * @var SerializerInterface
-     */
-    private $serializer;
-    /**
-     * @var PhoneRepository
-     */
-    private $phoneRepository;
     /**
      * @var EntityManagerInterface
      */
     private $entityManager;
     /**
-     * @var ValidatorInterface
+     * @var PhoneService
      */
-    private $validator;
+    private $phoneService;
 
-    public function __construct($limit, SerializerInterface $serializer, EntityManagerInterface $entityManager, PhoneRepository $phoneRepository, ValidatorInterface $validator)
+    public function __construct(PhoneService $phoneService, EntityManagerInterface $entityManager)
     {
-        $this->limit = $limit;
-        $this->serializer = $serializer;
-        $this->phoneRepository = $phoneRepository;
+        $this->phoneService = $phoneService;
         $this->entityManager = $entityManager;
-        $this->validator = $validator;
     }
 
     /**
@@ -49,10 +35,7 @@ class PhoneController extends AbstractController
      */
     public function show(Phone $phone)
     {
-        $phone = $this->phoneRepository->find($phone->getId());
-        $data = $this->serializer->serialize($phone, 'json', [
-            'groups' => ['show']
-        ]);
+        $data = $this->phoneService->getPhone($phone);
 
         return new Response($data, 200, [
             'Content-Type' => 'application/json'
@@ -66,14 +49,7 @@ class PhoneController extends AbstractController
      */
     public function index(Request $request)
     {
-        $page = $request->query->get('page');
-        if(is_null($page) || $page < 1) {
-            $page = 1;
-        }
-        $phones = $this->phoneRepository->findAllPhones($page,$this->limit);
-        $data = $this->serializer->serialize($phones, 'json', [
-            'groups' => ['list']
-        ]);
+        $data = $this->phoneService->getPhonesList($request);
 
         return new Response($data, 200, [
             'Content-Type' => 'application/json'
@@ -87,16 +63,7 @@ class PhoneController extends AbstractController
      */
     public function new(Request $request)
     {
-        $phone = $this->serializer->deserialize($request->getContent(), Phone::class, 'json');
-        $errors = $this->validator->validate($phone);
-        if(count($errors)) {
-            $errors = $this->serializer->serialize($errors, 'json');
-            return new Response($errors, 500, [
-                'Content-Type' => 'application/json'
-            ]);
-        }
-        $this->entityManager->persist($phone);
-        $this->entityManager->flush();
+        $this->phoneService->addPhone($request);
         $data = [
             'status' => 201,
             'message' => 'Le téléphone a bien été ajouté'
@@ -113,26 +80,7 @@ class PhoneController extends AbstractController
      */
     public function update(Request $request, Phone $phone)
     {
-        $phoneUpdate = $this->phoneRepository->findOneBy(['id' => $phone->getId()]);
-        $data = json_decode($request->getContent());
-        foreach ($data as $key => $value){
-            if($key && !empty($value)) {
-                $name = self::camelCase($key);
-                $setter = 'set'.self::camelCase($name);
-                if ($key == "year_of_marketing") {
-                    $value = new \DateTime($value);
-                }
-                $phoneUpdate->$setter($value);
-            }
-        }
-        $errors = $this->validator->validate($phoneUpdate);
-        if(count($errors)) {
-            $errors = $this->serializer->serialize($errors, 'json');
-            return new Response($errors, 500, [
-                'Content-Type' => 'application/json'
-            ]);
-        }
-        $this->entityManager->flush();
+        $this->phoneService->updatePhone($request, $phone);
         $data = [
             'status' => 200,
             'message' => 'Le téléphone a bien été mis à jour'
@@ -155,18 +103,5 @@ class PhoneController extends AbstractController
             'message' => 'Le téléphone a bien été supprimé'
         ];
         return new JsonResponse($data);
-    }
-
-    public static function camelCase($str, array $noStrip = [])
-    {
-        // non-alpha and non-numeric characters become spaces
-        $str = preg_replace('/[^a-z0-9' . implode("", $noStrip) . ']+/i', ' ', $str);
-        $str = trim($str);
-        // uppercase the first character of each word
-        $str = ucwords($str);
-        $str = str_replace(" ", "", $str);
-        $str = lcfirst($str);
-
-        return $str;
     }
 }
