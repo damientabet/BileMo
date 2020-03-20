@@ -103,7 +103,43 @@ class PhoneController extends AbstractController
         ];
         return new JsonResponse($data, 201);
     }
+
     /**
+     * @Route("/phones/{id}", name="phone.update", methods={"PUT"})
+     * @param Request $request
+     * @param Phone $phone
+     * @return JsonResponse|Response
+     * @throws \Exception
+     */
+    public function update(Request $request, Phone $phone)
+    {
+        $phoneUpdate = $this->phoneRepository->findOneBy(['id' => $phone->getId()]);
+        $data = json_decode($request->getContent());
+        foreach ($data as $key => $value){
+            if($key && !empty($value)) {
+                $name = self::camelCase($key);
+                $setter = 'set'.self::camelCase($name);
+                if ($key == "year_of_marketing") {
+                    $value = new \DateTime($value);
+                }
+                $phoneUpdate->$setter($value);
+            }
+        }
+        $errors = $this->validator->validate($phoneUpdate);
+        if(count($errors)) {
+            $errors = $this->serializer->serialize($errors, 'json');
+            return new Response($errors, 500, [
+                'Content-Type' => 'application/json'
+            ]);
+        }
+        $this->entityManager->flush();
+        $data = [
+            'status' => 200,
+            'message' => 'Le téléphone a bien été mis à jour'
+        ];
+        return new JsonResponse($data);
+    }
+
     /**
      * @Route("/phones/{id}", name="phone.delete", methods={"DELETE"})
      * @param Phone $phone
@@ -119,5 +155,18 @@ class PhoneController extends AbstractController
             'message' => 'Le téléphone a bien été supprimé'
         ];
         return new JsonResponse($data);
+    }
+
+    public static function camelCase($str, array $noStrip = [])
+    {
+        // non-alpha and non-numeric characters become spaces
+        $str = preg_replace('/[^a-z0-9' . implode("", $noStrip) . ']+/i', ' ', $str);
+        $str = trim($str);
+        // uppercase the first character of each word
+        $str = ucwords($str);
+        $str = str_replace(" ", "", $str);
+        $str = lcfirst($str);
+
+        return $str;
     }
 }
