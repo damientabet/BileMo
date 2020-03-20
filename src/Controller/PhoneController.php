@@ -103,4 +103,21 @@ class PhoneController extends AbstractController
         ];
         return new JsonResponse($data, 201);
     }
+    /**
+    /**
+     * @Route("/phones/{id}", name="phone.delete", methods={"DELETE"})
+     * @param Phone $phone
+     * @return Response
+     */
+    public function delete(Phone $phone)
+    {
+        $this->entityManager->remove($phone);
+        $this->entityManager->flush();
+
+        $data = [
+            'status' => 204,
+            'message' => 'Le téléphone a bien été supprimé'
+        ];
+        return new JsonResponse($data);
+    }
 }
