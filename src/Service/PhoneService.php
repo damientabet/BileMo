@@ -82,12 +82,12 @@ class PhoneService
         $phoneUpdate = $this->phoneRepository->findOneBy(['id' => $phone->getId()]);
         $data = json_decode($request->getContent());
         foreach ($data as $key => $value){
+            if ($key == "year_of_marketing") {
+                $value = new \DateTime($value);
+            }
             if($key && !empty($value)) {
                 $name = self::camelCase($key);
                 $setter = 'set'.self::camelCase($name);
-                if ($key == "year_of_marketing") {
-                    $value = new \DateTime($value);
-                }
                 $phoneUpdate->$setter($value);
             }
         }
