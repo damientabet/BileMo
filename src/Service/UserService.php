@@ -39,9 +39,7 @@ class UserService
             $errors = $this->validator->validate($user);
             if(count($errors)) {
                 $errors = $this->serializer->serialize($errors, 'json');
-                return new Response($errors, 500, [
-                    'Content-Type' => 'application/json'
-                ]);
+                return new Response($errors, 500, ['Content-Type' => 'application/json']);
             }
             $this->entityManager->persist($user);
             $this->entityManager->flush();

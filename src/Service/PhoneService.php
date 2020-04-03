@@ -46,7 +46,7 @@ class PhoneService
     public function getPhonesList(Request $request)
     {
         $page = $request->query->get('page');
-        if(is_null($page) || $page < 1) {
+        if($page === null || $page < 1) {
             $page = 1;
         }
         $phones = $this->phoneRepository->findAllPhones($page,$this->limit);
@@ -82,12 +82,12 @@ class PhoneService
         $phoneUpdate = $this->phoneRepository->findOneBy(['id' => $phone->getId()]);
         $data = json_decode($request->getContent());
         foreach ($data as $key => $value){
+            if ($key == "year_of_marketing") {
+                $value = new \DateTime($value);
+            }
             if($key && !empty($value)) {
                 $name = self::camelCase($key);
                 $setter = 'set'.self::camelCase($name);
-                if ($key == "year_of_marketing") {
-                    $value = new \DateTime($value);
-                }
                 $phoneUpdate->$setter($value);
             }
         }
