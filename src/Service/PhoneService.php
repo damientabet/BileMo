@@ -46,7 +46,7 @@ class PhoneService
     public function getPhonesList(Request $request)
     {
         $page = $request->query->get('page');
-        if(is_null($page) || $page < 1) {
+        if($page === null || $page < 1) {
             $page = 1;
         }
         $phones = $this->phoneRepository->findAllPhones($page,$this->limit);
