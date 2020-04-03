@@ -4,6 +4,7 @@ namespace App\Service;
 
 use App\Entity\Phone;
 use App\Repository\PhoneRepository;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -82,23 +83,32 @@ class PhoneService
         $phoneUpdate = $this->phoneRepository->findOneBy(['id' => $phone->getId()]);
         $data = json_decode($request->getContent());
         foreach ($data as $key => $value){
-            if ($key == "year_of_marketing") {
-                $value = new \DateTime($value);
-            }
+            $value = $this->convertToDateTime($key, $value);
             if($key && !empty($value)) {
-                $name = self::camelCase($key);
-                $setter = 'set'.self::camelCase($name);
+                $setter = 'set'.self::camelCase($key);
                 $phoneUpdate->$setter($value);
             }
         }
-        $errors = $this->validator->validate($phoneUpdate);
+        $this->displayError($this->validator->validate($phoneUpdate));
+        $this->entityManager->flush();
+    }
+
+    public function displayError($errors)
+    {
         if(count($errors)) {
             $errors = $this->serializer->serialize($errors, 'json');
             return new Response($errors, 500, [
                 'Content-Type' => 'application/json'
             ]);
         }
-        $this->entityManager->flush();
+    }
+
+    public function convertToDateTime($key, $value)
+    {
+        if ($key == "year_of_marketing") {
+            $value = new DateTime($value);
+        }
+        return $value;
     }
 
     public static function camelCase($str, array $noStrip = [])
