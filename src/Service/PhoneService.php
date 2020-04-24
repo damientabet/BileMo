@@ -11,23 +11,25 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class PhoneService extends Service
 {
-    public function getPhonesList(Request $request)
+    private $repositoryName = 'phoneRepository';
+
+    public function getDataList(Request $request)
     {
-        return $this->getAllItems($request, 'phoneRepository');
+        return $this->getAllItems($request, $this->repositoryName);
     }
 
-    public function getPhone(Phone $phone)
+    public function getData(Phone $phone)
     {
-        return $this->getItem($phone->getId(), 'phoneRepository');
+        return $this->getItem($phone->getId(), $this->repositoryName);
     }
 
-    public function addPhone(Request $request)
+    public function addData(Request $request)
     {
         $this->addItem($request, Phone::class);
     }
 
-    public function updatePhone(Request $request, Phone $phone)
+    public function updateData(Request $request, Phone $phone)
     {
-        $this->updateItem($request, $phone->getId(), 'phoneRepository');
+        $this->updateItem($request, $phone->getId(), $this->repositoryName);
     }
 }
