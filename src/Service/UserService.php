@@ -2,7 +2,9 @@
 
 namespace App\Service;
 
+use App\Entity\Client;
 use App\Entity\User;
+use App\Repository\ClientRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,14 +20,19 @@ class UserService
     private $passwordEncoder;
     private $entityManager;
     private $validator;
+    /**
+     * @var ClientRepository
+     */
+    private $clientRepository;
 
-    public function __construct($limit, SerializerInterface $serializer, UserPasswordEncoderInterface $passwordEncoder, EntityManagerInterface $entityManager, ValidatorInterface $validator)
+    public function __construct($limit, SerializerInterface $serializer, UserPasswordEncoderInterface $passwordEncoder, EntityManagerInterface $entityManager, ValidatorInterface $validator, ClientRepository $clientRepository)
     {
         $this->limit = $limit;
         $this->serializer = $serializer;
         $this->passwordEncoder = $passwordEncoder;
         $this->entityManager = $entityManager;
         $this->validator = $validator;
+        $this->clientRepository = $clientRepository;
     }
 
     public function newUser(Request $request)
@@ -36,6 +43,10 @@ class UserService
             $user->setUsername($values->username);
             $user->setPassword($this->passwordEncoder->encodePassword($user, $values->password));
             $user->setRoles($user->getRoles());
+
+            $client = $this->clientRepository->findOneBy(['id' => $values->client_id]);
+            $user->setClient($client);
+
             $errors = $this->validator->validate($user);
             if(count($errors)) {
                 $errors = $this->serializer->serialize($errors, 'json');
