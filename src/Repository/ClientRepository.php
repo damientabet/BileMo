@@ -15,11 +15,20 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
  */
 class ClientRepository extends ServiceEntityRepository
 {
+    /**
+     * ClientRepository constructor.
+     * @param ManagerRegistry $registry
+     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Client::class);
     }
 
+    /**
+     * @param $page
+     * @param $limit
+     * @return Paginator
+     */
     public function findAllByPage($page, $limit)
     {
         $query = $this->createQueryBuilder('p')

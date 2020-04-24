@@ -24,6 +24,15 @@ class UserService
      */
     private $clientRepository;
 
+    /**
+     * UserService constructor.
+     * @param $limit
+     * @param SerializerInterface $serializer
+     * @param UserPasswordEncoderInterface $passwordEncoder
+     * @param EntityManagerInterface $entityManager
+     * @param ValidatorInterface $validator
+     * @param ClientRepository $clientRepository
+     */
     public function __construct($limit, SerializerInterface $serializer, UserPasswordEncoderInterface $passwordEncoder, EntityManagerInterface $entityManager, ValidatorInterface $validator, ClientRepository $clientRepository)
     {
         $this->limit = $limit;
@@ -34,6 +43,10 @@ class UserService
         $this->clientRepository = $clientRepository;
     }
 
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function newUser(Request $request)
     {
         $values = json_decode($request->getContent());
@@ -64,6 +77,10 @@ class UserService
         return new JsonResponse($data, 500);
     }
 
+    /**
+     * @param $errors
+     * @return Response
+     */
     public function displayError($errors)
     {
         if(count($errors)) {

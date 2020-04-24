@@ -27,6 +27,12 @@ class Controller extends AbstractController
 
     protected $serviceName;
 
+    /**
+     * Controller constructor.
+     * @param PhoneService $phoneService
+     * @param ClientService $clientService
+     * @param EntityManagerInterface $entityManager
+     */
     public function __construct(PhoneService $phoneService, ClientService $clientService, EntityManagerInterface $entityManager)
     {
         $this->phoneService = $phoneService;
@@ -34,6 +40,10 @@ class Controller extends AbstractController
         $this->entityManager = $entityManager;
     }
 
+    /**
+     * @param Request $request
+     * @return Response
+     */
     public function index(Request $request)
     {
         $serviceName = $this->serviceName;
@@ -43,6 +53,10 @@ class Controller extends AbstractController
         ]);
     }
 
+    /**
+     * @param $object
+     * @return Response
+     */
     public function show($object)
     {
         $serviceName = $this->serviceName;
@@ -52,6 +66,10 @@ class Controller extends AbstractController
         ]);
     }
 
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function new(Request $request)
     {
         $serviceName = $this->serviceName;
@@ -63,6 +81,11 @@ class Controller extends AbstractController
         return new JsonResponse($data, 201);
     }
 
+    /**
+     * @param $request
+     * @param $object
+     * @return JsonResponse
+     */
     public function update($request, $object)
     {
         $serviceName = $this->serviceName;
@@ -74,6 +97,10 @@ class Controller extends AbstractController
         return new JsonResponse($data);
     }
 
+    /**
+     * @param $object
+     * @return JsonResponse
+     */
     public function delete($object)
     {
         $this->entityManager->remove($object);
