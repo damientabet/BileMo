@@ -50,7 +50,6 @@ class PhoneController extends AbstractController
     public function index(Request $request)
     {
         $data = $this->phoneService->getPhonesList($request);
-
         return new Response($data, 200, [
             'Content-Type' => 'application/json'
         ]);
