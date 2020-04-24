@@ -2,7 +2,6 @@
 
 namespace App\Service;
 
-use App\Entity\Client;
 use App\Entity\User;
 use App\Repository\ClientRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -47,11 +46,8 @@ class UserService
             $client = $this->clientRepository->findOneBy(['id' => $values->client_id]);
             $user->setClient($client);
 
-            $errors = $this->validator->validate($user);
-            if(count($errors)) {
-                $errors = $this->serializer->serialize($errors, 'json');
-                return new Response($errors, 500, ['Content-Type' => 'application/json']);
-            }
+            $this->displayError($this->validator->validate($user));
+            
             $this->entityManager->persist($user);
             $this->entityManager->flush();
 
@@ -66,5 +62,13 @@ class UserService
             'message' => 'Vous devez renseigner les clés username et password'
         ];
         return new JsonResponse($data, 500);
+    }
+
+    public function displayError($errors)
+    {
+        if(count($errors)) {
+            $errors = $this->serializer->serialize($errors, 'json');
+            return new Response($errors, 500, ['Content-Type' => 'application/json']);
+        }
     }
 }
