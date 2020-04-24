@@ -11,23 +11,25 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class ClientService extends Service
 {
-    public function getClientList(Request $request)
+    private $repositoryName = 'clientRepository';
+
+    public function getDataList(Request $request)
     {
-        return $this->getAllItems($request, 'clientRepository');
+        return $this->getAllItems($request, $this->repositoryName);
     }
 
-    public function getClient(Client $client)
+    public function getData(Client $client)
     {
-        return $this->getItem($client->getId(), 'clientRepository');
+        return $this->getItem($client->getId(), $this->repositoryName);
     }
 
-    public function addClient(Request $request)
+    public function addData(Request $request)
     {
         $this->addItem($request, Client::class);
     }
 
-    public function updateClient(Request $request, Client $client)
+    public function updateData(Request $request, Client $client)
     {
-        $this->updateItem($request, $client->getId(), 'clientRepository');
+        $this->updateItem($request, $client->getId(), $this->repositoryName);
     }
 }
