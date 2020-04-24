@@ -35,6 +35,15 @@ class Service
     private $validator;
     private $limit;
 
+    /**
+     * Service constructor.
+     * @param ClientRepository $clientRepository
+     * @param PhoneRepository $phoneRepository
+     * @param SerializerInterface $serializer
+     * @param EntityManagerInterface $entityManager
+     * @param ValidatorInterface $validator
+     * @param $limit
+     */
     public function __construct(ClientRepository $clientRepository, PhoneRepository $phoneRepository, SerializerInterface $serializer, EntityManagerInterface $entityManager, ValidatorInterface $validator, $limit)
     {
         $this->clientRepository = $clientRepository;
@@ -45,6 +54,11 @@ class Service
         $this->limit = $limit;
     }
 
+    /**
+     * @param Request $request
+     * @param $repositoryName
+     * @return string
+     */
     public function getAllItems(Request $request, $repositoryName)
     {
         $page = $request->query->get('page');
@@ -57,6 +71,11 @@ class Service
         ]);
     }
 
+    /**
+     * @param $idItem
+     * @param $repositoryName
+     * @return string
+     */
     public function getItem($idItem, $repositoryName)
     {
         $item = $this->$repositoryName->find($idItem);
@@ -65,6 +84,10 @@ class Service
         ]);
     }
 
+    /**
+     * @param Request $request
+     * @param $class
+     */
     public function addItem(Request $request, $class)
     {
         $data = $this->serializer->deserialize($request->getContent(), $class, 'json');
@@ -75,6 +98,11 @@ class Service
         $this->entityManager->flush();
     }
 
+    /**
+     * @param Request $request
+     * @param $idItem
+     * @param $repositoryName
+     */
     public function updateItem(Request $request, $idItem, $repositoryName)
     {
         $item = $this->$repositoryName->findOneBy(['id' => $idItem]);
@@ -91,6 +119,10 @@ class Service
         $this->entityManager->flush();
     }
 
+    /**
+     * @param $errors
+     * @return Response
+     */
     public function displayError($errors)
     {
         if(count($errors)) {
@@ -101,6 +133,12 @@ class Service
         }
     }
 
+    /**
+     * @param $key
+     * @param $value
+     * @return DateTime
+     * @throws \Exception
+     */
     public function convertToDateTime($key, $value)
     {
         if ($key == "year_of_marketing") {
@@ -109,6 +147,11 @@ class Service
         return $value;
     }
 
+    /**
+     * @param $str
+     * @param array $noStrip
+     * @return string|string[]|null
+     */
     public static function camelCase($str, array $noStrip = [])
     {
         $str = preg_replace('/[^a-z0-9' . implode("", $noStrip) . ']+/i', ' ', $str);

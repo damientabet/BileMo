@@ -15,6 +15,10 @@ class SecurityController extends AbstractController
      */
     private $userService;
 
+    /**
+     * SecurityController constructor.
+     * @param UserService $userService
+     */
     public function __construct(UserService $userService)
     {
         $this->userService = $userService;

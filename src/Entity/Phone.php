@@ -100,16 +100,26 @@ class Phone
      */
     private $price;
 
+    /**
+     * @return int|null
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    /**
+     * @return string|null
+     */
     public function getBrand(): ?string
     {
         return $this->brand;
     }
 
+    /**
+     * @param string $brand
+     * @return $this
+     */
     public function setBrand(string $brand): self
     {
         $this->brand = $brand;
@@ -117,11 +127,18 @@ class Phone
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getModel(): ?string
     {
         return $this->model;
     }
 
+    /**
+     * @param string $model
+     * @return $this
+     */
     public function setModel(string $model): self
     {
         $this->model = $model;
@@ -129,11 +146,18 @@ class Phone
         return $this;
     }
 
+    /**
+     * @return \DateTimeInterface|null
+     */
     public function getYearOfMarketing(): ?\DateTimeInterface
     {
         return $this->year_of_marketing;
     }
 
+    /**
+     * @param \DateTimeInterface $year_of_marketing
+     * @return $this
+     */
     public function setYearOfMarketing(\DateTimeInterface $year_of_marketing): self
     {
         $this->year_of_marketing = $year_of_marketing;
@@ -141,11 +165,18 @@ class Phone
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getScreenSize(): ?string
     {
         return $this->screen_size;
     }
 
+    /**
+     * @param string $screen_size
+     * @return $this
+     */
     public function setScreenSize(string $screen_size): self
     {
         $this->screen_size = $screen_size;
@@ -153,11 +184,18 @@ class Phone
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getScreenResolution(): ?string
     {
         return $this->screen_resolution;
     }
 
+    /**
+     * @param string $screen_resolution
+     * @return $this
+     */
     public function setScreenResolution(string $screen_resolution): self
     {
         $this->screen_resolution = $screen_resolution;
@@ -165,11 +203,18 @@ class Phone
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getOsVersion(): ?string
     {
         return $this->os_version;
     }
 
+    /**
+     * @param string $os_version
+     * @return $this
+     */
     public function setOsVersion(string $os_version): self
     {
         $this->os_version = $os_version;
@@ -177,11 +222,18 @@ class Phone
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getColor(): ?string
     {
         return $this->color;
     }
 
+    /**
+     * @param string $color
+     * @return $this
+     */
     public function setColor(string $color): self
     {
         $this->color = $color;
@@ -189,11 +241,18 @@ class Phone
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getSpecificAbsorptionRate(): ?string
     {
         return $this->specific_absorption_rate;
     }
 
+    /**
+     * @param string $specific_absorption_rate
+     * @return $this
+     */
     public function setSpecificAbsorptionRate(string $specific_absorption_rate): self
     {
         $this->specific_absorption_rate = $specific_absorption_rate;
@@ -201,11 +260,18 @@ class Phone
         return $this;
     }
 
+    /**
+     * @return int|null
+     */
     public function getRomMemory(): ?int
     {
         return $this->rom_memory;
     }
 
+    /**
+     * @param int $rom_memory
+     * @return $this
+     */
     public function setRomMemory(int $rom_memory): self
     {
         $this->rom_memory = $rom_memory;
@@ -213,11 +279,18 @@ class Phone
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getDescription(): ?string
     {
         return $this->description;
     }
 
+    /**
+     * @param string $description
+     * @return $this
+     */
     public function setDescription(string $description): self
     {
         $this->description = $description;
@@ -225,11 +298,18 @@ class Phone
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getPrice(): ?string
     {
         return $this->price;
     }
 
+    /**
+     * @param string $price
+     * @return $this
+     */
     public function setPrice(string $price): self
     {
         $this->price = $price;

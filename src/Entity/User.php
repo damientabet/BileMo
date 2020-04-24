@@ -42,6 +42,9 @@ class User implements UserInterface
      */
     private $client;
 
+    /**
+     * @return int|null
+     */
     public function getId(): ?int
     {
         return $this->id;
@@ -57,6 +60,10 @@ class User implements UserInterface
         return (string) $this->username;
     }
 
+    /**
+     * @param string $username
+     * @return $this
+     */
     public function setUsername(string $username): self
     {
         $this->username = $username;
@@ -76,6 +83,10 @@ class User implements UserInterface
         return array_unique($roles);
     }
 
+    /**
+     * @param array $roles
+     * @return $this
+     */
     public function setRoles(array $roles): self
     {
         $this->roles = $roles;
@@ -91,6 +102,10 @@ class User implements UserInterface
         return (string) $this->password;
     }
 
+    /**
+     * @param string $password
+     * @return $this
+     */
     public function setPassword(string $password): self
     {
         $this->password = $password;
@@ -115,11 +130,18 @@ class User implements UserInterface
         // $this->plainPassword = null;
     }
 
+    /**
+     * @return Client|null
+     */
     public function getClient(): ?Client
     {
         return $this->client;
     }
 
+    /**
+     * @param Client|null $client
+     * @return $this
+     */
     public function setClient(?Client $client): self
     {
         $this->client = $client;
