@@ -58,7 +58,7 @@ class ClientController extends AbstractController
     /**
      * @Route("/clients/add", name="client.add", methods={"POST"})
      * @param Request $request
-     * @return Response
+     * @return JsonResponse
      */
     public function new(Request $request)
     {
