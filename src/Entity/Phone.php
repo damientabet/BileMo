@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
+use Swagger\Annotations as SWG;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\PhoneRepository")
@@ -16,6 +17,7 @@ class Phone
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      * @Groups({"list", "show"})
+     * @SWG\Property(description="The ID of this client")
      */
     private $id;
 
@@ -24,6 +26,7 @@ class Phone
      * @Groups({"list", "show"})
      * @Assert\NotBlank(message="Le champ ne doit pas être vide")
      * @Assert\Length(min="2", minMessage="Ce champ doit contenir un minimum de {{ limit }} caractères", max="128", maxMessage="Ce champ doit contenir un maximum de {{ limit }} caractères")
+     * @SWG\Property(description="The brand of this phone")
      */
     private $brand;
 
@@ -32,12 +35,14 @@ class Phone
      * @Groups({"list", "show"})
      * @Assert\NotBlank(message="Le champ ne doit pas être vide")
      * @Assert\Length(min="2", minMessage="Ce champ doit contenir un minimum de {{ limit }} caractères", max="128", maxMessage="Ce champ doit contenir un maximum de {{ limit }} caractères")
+     * @SWG\Property(description="The model of this phone")
      */
     private $model;
 
     /**
      * @ORM\Column(type="date")
      * @Groups({"show"})
+     * @SWG\Property(description="The year of marketing of this phone")
      */
     private $year_of_marketing;
 
@@ -45,6 +50,7 @@ class Phone
      * @ORM\Column(type="decimal", precision=5, scale=2)
      * @Groups({"show"})
      * @Assert\NotBlank(message="Le champ ne doit pas être vide")
+     * @SWG\Property(description="The screen size of this phone", example="6.5")
      */
     private $screen_size;
 
@@ -53,6 +59,7 @@ class Phone
      * @Groups({"show"})
      * @Assert\NotBlank(message="Le champ ne doit pas être vide")
      * @Assert\Length(min="2", minMessage="Ce champ doit contenir un minimum de {{ limit }} caractères", max="128", maxMessage="Ce champ doit contenir un maximum de {{ limit }} caractères")
+     * @SWG\Property(description="The screen resolution of this phone", example="1920x1080")
      */
     private $screen_resolution;
 
@@ -61,6 +68,7 @@ class Phone
      * @Groups({"show"})
      * @Assert\NotBlank(message="Le champ ne doit pas être vide")
      * @Assert\Length(min="2", minMessage="Ce champ doit contenir un minimum de {{ limit }} caractères", max="64", maxMessage="Ce champ doit contenir un maximum de {{ limit }} caractères")
+     * @SWG\Property(description="The OS Version of this phone")
      */
     private $os_version;
 
@@ -69,12 +77,14 @@ class Phone
      * @Groups({"show"})
      * @Assert\NotBlank(message="Le champ ne doit pas être vide")
      * @Assert\Length(min="2", minMessage="Ce champ doit contenir un minimum de {{ limit }} caractères", max="32", maxMessage="Ce champ doit contenir un maximum de {{ limit }} caractères")
+     * @SWG\Property(description="The color of this phone", example="Red")
      */
     private $color;
 
     /**
      * @ORM\Column(type="decimal", precision=3, scale=2)
      * @Groups({"show"})
+     * @SWG\Property(description="The Specific Absorption Rate of this phone")
      */
     private $specific_absorption_rate;
 
@@ -82,6 +92,7 @@ class Phone
      * @ORM\Column(type="integer")
      * @Groups({"show"})
      * @Assert\NotBlank(message="Le champ ne doit pas être vide")
+     * @SWG\Property(description="The ROM Memory of this phone")
      */
     private $rom_memory;
 
@@ -90,6 +101,7 @@ class Phone
      * @Groups({"show"})
      * @Assert\NotBlank(message="Le champ ne doit pas être vide")
      * @Assert\Length(min="2", minMessage="Ce champ doit contenir un minimum de {{ limit }} caractères", max="255", maxMessage="Ce champ doit contenir un maximum de {{ limit }} caractères")
+     * @SWG\Property(description="The description of this phone")
      */
     private $description;
 
@@ -97,6 +109,7 @@ class Phone
      * @ORM\Column(type="decimal", precision=6, scale=2)
      * @Groups({"list", "show"})
      * @Assert\NotBlank(message="Le champ ne doit pas être vide")
+     * @SWG\Property(description="The price of this phone", example="659.99")
      */
     private $price;
 

@@ -10,6 +10,10 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * Class Controller
+ * @package App\Controller
+ */
 class Controller extends AbstractController
 {
     /**
@@ -91,7 +95,7 @@ class Controller extends AbstractController
         $serviceName = $this->serviceName;
         $this->$serviceName->updateData($request, $object);
         $data = [
-            'status' => 200,
+            'status' => 201,
             'message' => 'L\'élément a bien été mis à jour'
         ];
         return new JsonResponse($data);

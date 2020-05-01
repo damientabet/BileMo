@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
+use Swagger\Annotations as SWG;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ClientRepository")
@@ -18,6 +19,7 @@ class Client
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      * @Groups({"list", "show"})
+     * @SWG\Property(type="integer", description="The ID of this client")
      */
     private $id;
 
@@ -25,12 +27,14 @@ class Client
      * @ORM\Column(type="string", length=128)
      * @Groups({"list", "show"})
      * @Assert\NotBlank(message="Le champ ne doit pas être vide")
+     * @SWG\Property(type="string", description="The name of this client")
      */
     private $name;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\User", mappedBy="client")
      * @Groups({"show"})
+     *
      */
     private $users;
 
