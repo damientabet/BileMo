@@ -65,7 +65,7 @@ class SecurityController extends AbstractController
      *     description="ID of the client associated",
      *     required=true,
      *     @SWG\Schema(
-     *          @SWG\Property(property="client_id", type="int")
+     *          @SWG\Property(property="client_id", type="integer")
      *     )
      * )
      * @SWG\Tag(name="User")
