@@ -38,7 +38,7 @@ Modifier les accès à votre base de données dans le fichier ``.env [DATABASE_U
 ### Étape 7  
 
 Installer le logiciel Postman pour utiliser l'API.  
-https://www.postman.com/downloads
+www.postman.com/downloads
 
 ### Étape 8  
 
