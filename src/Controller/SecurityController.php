@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Swagger\Annotations as SWG;
 use Nelmio\ApiDocBundle\Annotation\Model;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 /**
  * Class SecurityController
@@ -34,6 +35,7 @@ class SecurityController extends AbstractController
      * @Route("/register", name="register", methods={"POST"})
      * @param Request $request
      * @return JsonResponse
+     * @Security("is_granted('ROLE_SUPER_ADMIN') or is_granted('ROLE_ADMIN')")
      * @SWG\Response(
      *     response=201,
      *     description="Create user"
@@ -63,9 +65,19 @@ class SecurityController extends AbstractController
      *     in="body",
      *     type="int",
      *     description="ID of the client associated",
-     *     required=true,
+     *     required=false,
      *     @SWG\Schema(
      *          @SWG\Property(property="client_id", type="integer")
+     *     )
+     * )
+     * @SWG\Parameter(
+     *     name="role",
+     *     in="body",
+     *     type="int",
+     *     description="Role of the client associated",
+     *     required=false,
+     *     @SWG\Schema(
+     *          @SWG\Property(property="role", type="string", example="ROLE_USER")
      *     )
      * )
      * @SWG\Tag(name="User")

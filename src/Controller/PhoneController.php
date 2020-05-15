@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Swagger\Annotations as SWG;
-
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 /**
  * Class PhoneController
  * @package App\Controller
@@ -62,6 +62,7 @@ class PhoneController extends Controller
      * @Route("/phones/add", name="phone.add", methods={"POST"})
      * @param Request $request
      * @return JsonResponse
+     * @Security("is_granted('ROLE_SUPER_ADMIN')")
      * @SWG\Response(
      *     response=201,
      *     description="Add new phone"
@@ -192,6 +193,7 @@ class PhoneController extends Controller
      * @param Request $request
      * @param Phone $phone
      * @return JsonResponse|Response
+     * @Security("is_granted('ROLE_SUPER_ADMIN')")
      * @SWG\Response(
      *     response=201,
      *     description="Update phone with ID {id}"
@@ -321,6 +323,7 @@ class PhoneController extends Controller
      * @Route("/phone/{id}", name="phone.delete", methods={"DELETE"})
      * @param Phone $phone
      * @return Response
+     * @Security("is_granted('ROLE_SUPER_ADMIN')")
      * @SWG\Response(
      *     response=204,
      *     description="Delete phone with ID {id}"
