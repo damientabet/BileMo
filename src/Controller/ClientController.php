@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Swagger\Annotations as SWG;
-
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 /**
  * Class ClientController
  * @package App\Controller
@@ -23,6 +23,7 @@ class ClientController extends Controller
      * @Route("/client/{id}", name="client.show", methods={"GET"})
      * @param Client $client
      * @return Response
+     * @Security("is_granted('ROLE_SUPER_ADMIN') or is_granted('ROLE_ADMIN')")
      *
      * @SWG\Response(
      *     response=200,
@@ -38,7 +39,14 @@ class ClientController extends Controller
      */
     public function displayClient(Client $client)
     {
-        return $this->show($client);
+        if ($this->isGranted('ROLE_SUPER_ADMIN') || $this->getUser()->getClient()->getId() == $client->getId()) {
+            return $this->show($client);
+        }
+        $data = [
+            'status' => 401,
+            'message' => 'Full authentication is required to access this resource.'
+        ];
+        return new JsonResponse($data);
     }
 
     /**
@@ -64,6 +72,7 @@ class ClientController extends Controller
      * @Route("/clients/add", name="client.add", methods={"POST"})
      * @param Request $request
      * @return JsonResponse
+     * @Security("is_granted('ROLE_SUPER_ADMIN')")
      * @SWG\Response(
      *     response=201,
      *     description="Add new Client"
@@ -94,6 +103,7 @@ class ClientController extends Controller
      * @param Request $request
      * @param Client $client
      * @return JsonResponse|Response
+     * @Security("is_granted('ROLE_SUPER_ADMIN')")
      * @SWG\Response(
      *     response=201,
      *     description="Update client with ID {id}"
@@ -123,6 +133,7 @@ class ClientController extends Controller
      * @Route("/client/{id}", name="client.delete", methods={"DELETE"})
      * @param Client $client
      * @return Response
+     * @Security("is_granted('ROLE_SUPER_ADMIN')")
      * @SWG\Response(
      *     response=204,
      *     description="Delete client with ID {id}"
