@@ -44,7 +44,12 @@ www.postman.com/downloads
 
 Grâce à Postman, créer un nouvel utilisateur via le lien suivant : ``/register``  
 
-### Étape 9
+### Étape 9  
+
+Depuis ``PHPMYADMIN``, modifier la colonne "Role" de votre compte utilisateur en ``"ROLE_SUPER_ADMIN"`` afin d'avoir
+les accès total à l'API.   
+
+### Étape 10
 
 Vous pouvez dès à présent utiliser l'API en se référent à la documentation.  
 ``/doc``
