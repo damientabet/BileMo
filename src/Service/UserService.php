@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -23,6 +24,10 @@ class UserService
      * @var ClientRepository
      */
     private $clientRepository;
+    /**
+     * @var Security
+     */
+    private $security;
 
     /**
      * UserService constructor.
@@ -33,7 +38,7 @@ class UserService
      * @param ValidatorInterface $validator
      * @param ClientRepository $clientRepository
      */
-    public function __construct($limit, SerializerInterface $serializer, UserPasswordEncoderInterface $passwordEncoder, EntityManagerInterface $entityManager, ValidatorInterface $validator, ClientRepository $clientRepository)
+    public function __construct($limit, SerializerInterface $serializer, UserPasswordEncoderInterface $passwordEncoder, EntityManagerInterface $entityManager, ValidatorInterface $validator, ClientRepository $clientRepository, Security $security)
     {
         $this->limit = $limit;
         $this->serializer = $serializer;
@@ -41,6 +46,7 @@ class UserService
         $this->entityManager = $entityManager;
         $this->validator = $validator;
         $this->clientRepository = $clientRepository;
+        $this->security = $security;
     }
 
     /**
@@ -49,14 +55,17 @@ class UserService
      */
     public function newUser(Request $request)
     {
+        $isSuperAdmin = $this->security->isGranted('ROLE_SUPER_ADMIN');
+        $client_id = $this->security->getUser()->getClient();
         $values = json_decode($request->getContent());
         if(isset($values->username,$values->password)) {
             $user = new User();
             $user->setUsername($values->username);
             $user->setPassword($this->passwordEncoder->encodePassword($user, $values->password));
-            $user->setRoles($user->getRoles());
+            $roles = ($isSuperAdmin && isset($values->role)) ? [$values->role] : $user->getRoles();
+            $user->setRoles($roles);
 
-            $client = $this->clientRepository->findOneBy(['id' => $values->client_id]);
+            $client = $this->clientRepository->findOneBy(['id' => ($isSuperAdmin && isset($values->client_id)) ? $values->client_id : $client_id]);
             $user->setClient($client);
 
             $this->displayError($this->validator->validate($user));
