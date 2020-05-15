@@ -4,7 +4,7 @@ nelmio_api_doc:
         info:
             title: BileMo
             description: This is an API for project 7 of the PHP/Symfony course on Openclassrooms
-            version: 0.4.0
+            version: 0.6.1
         host: 127.0.0.1:8000
         schemes: [http, https]
     areas: # to filter documented areas
