@@ -3,12 +3,23 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use Swagger\Annotations as SWG;
+use Hateoas\Configuration\Annotation as Hateoas;
+use JMS\Serializer\Annotation\Groups as Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\PhoneRepository")
+ *
+ * @Hateoas\Relation(
+ *      "self",
+ *      href = @Hateoas\Route(
+ *          "phone.show",
+ *          parameters = { "id" = "expr(object.getId())" },
+ *          absolute= true
+ *      ),
+ *     exclusion = @Hateoas\Exclusion(groups = "list")
+ * )
  */
 class Phone
 {

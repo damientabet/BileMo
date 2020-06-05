@@ -6,9 +6,11 @@ use App\Repository\ClientRepository;
 use App\Repository\PhoneRepository;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
+use JMS\Serializer\SerializationContext;
+use JMS\Serializer\SerializerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class Service
@@ -61,14 +63,13 @@ class Service
      */
     public function getAllItems(Request $request, $repositoryName)
     {
-        $page = $request->query->get('page');
+        $page = $request->get('page');
         if($page === null || $page < 1) {
             $page = 1;
         }
         $items = $this->$repositoryName->findAllByPage($page,$this->limit);
-        return $this->serializer->serialize($items, 'json', [
-            'groups' => ['list']
-        ]);
+        $context = SerializationContext::create()->setGroups(array('Default', 'items' => array('list')));
+        return $this->serializer->serialize($items, 'json', $context);
     }
 
     /**
@@ -79,9 +80,14 @@ class Service
     public function getItem($idItem, $repositoryName)
     {
         $item = $this->$repositoryName->find($idItem);
-        return $this->serializer->serialize($item, 'json', [
-            'groups' => ['show']
-        ]);
+        $context = SerializationContext::create()->setGroups(array(
+            'show',
+            'users_group',
+            'users' => array(
+                'user'
+            )
+        ));
+        return $this->serializer->serialize($item, 'json', $context);
     }
 
     /**
@@ -102,6 +108,7 @@ class Service
      * @param Request $request
      * @param $idItem
      * @param $repositoryName
+     * @throws Exception
      */
     public function updateItem(Request $request, $idItem, $repositoryName)
     {
@@ -137,7 +144,7 @@ class Service
      * @param $key
      * @param $value
      * @return DateTime
-     * @throws \Exception
+     * @throws Exception
      */
     public function convertToDateTime($key, $value)
     {

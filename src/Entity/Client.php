@@ -5,12 +5,23 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use Swagger\Annotations as SWG;
+use Hateoas\Configuration\Annotation as Hateoas;
+use JMS\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ClientRepository")
+ *
+ * @Hateoas\Relation(
+ *      "self",
+ *      href = @Hateoas\Route(
+ *          "client.show",
+ *          parameters = { "id" = "expr(object.getId())" },
+ *          absolute= true
+ *      ),
+ *     exclusion = @Hateoas\Exclusion(groups = "list")
+ * )
  */
 class Client
 {
@@ -33,7 +44,7 @@ class Client
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\User", mappedBy="client")
-     * @Groups({"show"})
+     * @Groups({"users_group"})
      *
      */
     private $users;

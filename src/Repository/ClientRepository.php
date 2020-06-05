@@ -5,7 +5,8 @@ namespace App\Repository;
 use App\Entity\Client;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Doctrine\ORM\Tools\Pagination\Paginator;
+use Knp\Component\Pager\Pagination\PaginationInterface;
+use Knp\Component\Pager\PaginatorInterface;
 
 /**
  * @method Client|null find($id, $lockMode = null, $lockVersion = null)
@@ -16,18 +17,25 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
 class ClientRepository extends ServiceEntityRepository
 {
     /**
+     * @var PaginatorInterface
+     */
+    private $paginator;
+
+    /**
      * ClientRepository constructor.
      * @param ManagerRegistry $registry
+     * @param PaginatorInterface $paginator
      */
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $registry, PaginatorInterface $paginator)
     {
         parent::__construct($registry, Client::class);
+        $this->paginator = $paginator;
     }
 
     /**
      * @param $page
      * @param $limit
-     * @return Paginator
+     * @return PaginationInterface
      */
     public function findAllByPage($page, $limit)
     {
@@ -35,6 +43,6 @@ class ClientRepository extends ServiceEntityRepository
             ->getQuery()
             ->setFirstResult(($page - 1) * $limit)
             ->setMaxResults($limit);
-        return new Paginator($query);
+        return $this->paginator->paginate($query, $page, 2);
     }
 }

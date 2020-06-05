@@ -10,6 +10,8 @@
         "ext-iconv": "*",
         "ext-json": "*",
         "doctrine/doctrine-fixtures-bundle": "^3.3",
+        "jms/serializer-bundle": "^3.6",
+        "knplabs/knp-paginator-bundle": "^5.2",
         "lexik/jwt-authentication-bundle": "^2.6",
         "nelmio/api-doc-bundle": "^3.6",
         "sensio/framework-extra-bundle": "^5.5",
@@ -27,7 +29,8 @@
         "symfony/twig-pack": "^1.0",
         "symfony/validator": "4.4.*",
         "symfony/web-server-bundle": "4.4.*",
-        "symfony/yaml": "4.4.*"
+        "symfony/yaml": "4.4.*",
+        "willdurand/hateoas-bundle": "^2.1"
     },
     "require-dev": {
     },
@@ -59,13 +62,7 @@
         "auto-scripts": {
             "cache:clear": "symfony-cmd",
             "assets:install %PUBLIC_DIR%": "symfony-cmd"
-        },
-        "post-install-cmd": [
-            "@auto-scripts"
-        ],
-        "post-update-cmd": [
-            "@auto-scripts"
-        ]
+        }
     },
     "conflict": {
         "symfony/symfony": "*"
